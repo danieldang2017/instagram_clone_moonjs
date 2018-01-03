@@ -31,88 +31,10 @@
     <!-- Adds Moon -->
     <script src="https://unpkg.com/moonjs"></script>
     
-    <script>
-        /*global $*/
-        $(document).ready( ()=> {
-          $('#login').submit( ()=> {
-            $('#error').html('');
-          
-            var email = $('#email').val();
-            var password = $('#password').val();
-          
-            if(password.length < 6) {
-              var errorMessage = "Password must be logner than 6 characters";
-              $('#error').html(errorMessage);
-            }
-            else if (email.length > 0 && password.length > 0){
-              Promise.resolve()
-              .then(function() {
-                return $.post('/server/login.php', 'type=signin' + '&email=' + email + '&password=' + password);
-              })
-             .then(function(auth) {
-                if (auth.isValid) {
-                  window.location.replace('index.html');
-                } else {
-                  $('#error').html('Invalid email or password!');
-                }
-              })
-            }
-          });
-        });
-
-        $(document).ready( ()=> {
-          $('#register').submit( ()=> {
-            $('#generalErr').html('');
-            
-            var firstNameField = $('#firstNamesignup').val();
-            var lastNameField = $('#lastNamesignup').val();
-            var usernameField = $('#usernamesignup').val();
-            var emailField = $('#emailsignup').val();
-            var passwordField = $('#passwordsignup').val();
-            var passwordConfirmField = $('#passwordsignup_confirm').val();
-
-            if (passwordField !== passwordConfirmField) {
-              var errorMessage = "Confirm password does not match password";
-              $('#generalErr').html(errorMessage);
-            } else if (passwordField.length < 6) {
-              var errorMessage = "Password must be logner than 6 characters";
-              $('#generalErr').html(errorMessage);
-            } else {
-              Promise.resolve()
-              .then(function() {
-                  return $.post('/server/login.php', 
-                 'type=register' + 
-                 '&displayName=' + firstNameField+ ' ' + lastNameField + 
-                 '&firstName=' + firstNameField +  
-                 '&lastName=' + lastNameField + 
-                 '&username=' + usernameField + 
-                 '&email=' + emailField + 
-                 '&password=' +  passwordField
-              );
-            })
-            .then(function(auth){
-                $('#generalErr').html(auth.message);
-                if (auth.isValid) {
-                  $('#toggle').addClass('hide');
-                  $('#registerSuccess').html('Account created successfully!<br>');
-                  $.post('/server/login.php', 'type=signin' + '&email=' + emailField + '&password=' + passwordField)
-                  .done( (auth) => {
-                    if(auth.isValid) {
-                      $('#registerSuccess').append('Proceeding to site')
-                      setTimeout(window.location.replace('index.html'), 3000);
-                    }
-                  })
-                }
-                else {
-                  $('#generalErr').html(auth.message);
-                }
-              })
-            }
-          });
-        });
-    </script>
   </head>
   <body>
+    <div id="main">
+    
     <div class="container">
       <header>
         <h1>Instagram</h1>
@@ -143,7 +65,9 @@
   							  <span><a style="text-decoration:none; font-size: 14px; font-style: italic;" href="forgotPassword.html">Forgot password ?</a></span>
   						  </p>
                 <p class="login button"> 
-                  <input type="submit" value="Login"/> 
+                  <input type="submit" value="Login" m-on:click="login"/> 
+                  
+                  
   						  </p>
                 <p class="change_link">
   							  Don't have an account? 
@@ -192,7 +116,7 @@
                   <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="Confirm password"/>
                 </div>
                 <p class="signin button"> 
-								<input type="submit" value="Sign up"/> 
+								<input type="submit" value="Sign up" m-on:click="register"/> 
     						</p>
                 <p class="change_link">  
     							Already have an account ?
@@ -205,5 +129,94 @@
         </div>  
       </section>
     </div>
+    
+    </div>
+    
+     <script>
+      /*global Moon*/
+      /*global $*/
+      const app = new Moon({
+        el: "#main",
+        data: {
+        },
+        methods: {
+          login: function() {
+            $('#error').html('');
+          
+            var email = $('#email').val();
+            var password = $('#password').val();
+          
+            if(password.length < 6) {
+              var errorMessage = "Password must be logner than 6 characters";
+              $('#error').html(errorMessage);
+            }
+            else if (email.length > 0 && password.length > 0){
+              Promise.resolve()
+              .then(function() {
+                return $.post('/server/login.php', 'type=signin' + '&email=' + email + '&password=' + password);
+              })
+             .then(function(auth) {
+                if (auth.isValid) {
+                  window.location.replace('index.html');
+                } else {
+                  $('#error').html('Invalid email or password!');
+                }
+              })
+            }
+          },
+          register: function() {
+            $('#generalErr').html('');
+           
+            var firstNameField = $('#firstNamesignup').val();
+            var lastNameField = $('#lastNamesignup').val();
+            var usernameField = $('#usernamesignup').val();
+            var emailField = $('#emailsignup').val();
+            var passwordField = $('#passwordsignup').val();
+            var passwordConfirmField = $('#passwordsignup_confirm').val();
+
+            if (passwordField !== passwordConfirmField) {
+              var errorMessage = "Confirm password does not match password";
+              $('#generalErr').html(errorMessage);
+            } else if (passwordField.length < 6) {
+              var errorMessage = "Password must be logner than 6 characters";
+              $('#generalErr').html(errorMessage);
+            } else {
+              Promise.resolve()
+              .then(function() {
+                  return $.post('/server/login.php', 
+                 'type=register' + 
+                 '&displayName=' + firstNameField+ ' ' + lastNameField + 
+                 '&firstName=' + firstNameField +  
+                 '&lastName=' + lastNameField + 
+                 '&username=' + usernameField + 
+                 '&email=' + emailField + 
+                 '&password=' +  passwordField
+              );
+            })
+            .then(function(auth){
+                $('#generalErr').html(auth.message);
+                if (auth.isValid) {
+                  $('#toggle').addClass('hide');
+                  $('#registerSuccess').html('Account created successfully!<br>');
+                  $.post('/server/login.php', 'type=signin' + '&email=' + emailField + '&password=' + passwordField)
+                  .done( (auth) => {
+                    if(auth.isValid) {
+                      $('#registerSuccess').append('Proceeding to site')
+                      setTimeout(window.location.replace('index.html'), 3000);
+                    }
+                  })
+                }
+                else {
+                  $('#generalErr').html(auth.message);
+                }
+              })
+            }
+            
+          }
+        }
+      });
+      
+      </script>
+      
   </body>
 </html>

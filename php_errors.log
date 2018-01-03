@@ -499,3 +499,6 @@ Stack trace:
 [03-Jan-2018 00:04:34 UTC] PHP Stack trace:
 [03-Jan-2018 00:04:34 UTC] PHP   1. {main}() /home/ubuntu/workspace/server/getPostsContent.php:0
 [03-Jan-2018 00:04:34 UTC] PHP   2. header() /home/ubuntu/workspace/server/getPostsContent.php:11
+[03-Jan-2018 03:40:17 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/ubuntu/workspace/server/session.php on line 9
+[03-Jan-2018 04:05:30 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/ubuntu/workspace/server/session.php on line 9
+[03-Jan-2018 04:07:59 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/ubuntu/workspace/server/session.php on line 9
