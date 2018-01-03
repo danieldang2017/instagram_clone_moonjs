@@ -51,7 +51,7 @@
               <form id="loginForm" onSubmit="return false;" autocomplete="on"> 
                 <h1>Log in</h1> 
                 <div class="form-group" id="errorForm">
-                  <span class="help-block" id="error"></span>
+                  <span class="help-block" id="error">{{errorMessage}}</span>
                 </div>
                 <p> 
                   <label for="email" class="uname" data-icon="u" > Your email</label>
@@ -80,7 +80,7 @@
               <form id='registerForm' onSubmit="return false;" autocomplete="on"> 
                 <h1> Sign up </h1>
                 <div class="has-error">
-                  <span class="help-block" id="generalErr"></span>
+                  <span class="help-block" id="generalErr">{{generalErr}}</span>
                 </div>
                 <div class="has-success">
                   <span class="help-block" id="registerSuccess"></span>
@@ -138,17 +138,17 @@
       const app = new Moon({
         el: "#main",
         data: {
+          errorMessage: '',
+          generalErr: ''
         },
         methods: {
           login: function() {
-            $('#error').html('');
-          
+            this.set("errorMessage",'');
             var email = $('#email').val();
             var password = $('#password').val();
-          
             if(password.length < 6) {
-              var errorMessage = "Password must be logner than 6 characters";
-              $('#error').html(errorMessage);
+            var error = 'Password must be logner than 6 characters';
+             this.set('errorMessage',error);
             }
             else if (email.length > 0 && password.length > 0){
               Promise.resolve()
@@ -165,21 +165,19 @@
             }
           },
           register: function() {
-            $('#generalErr').html('');
-           
+            this.set("generalErr",'');
             var firstNameField = $('#firstNamesignup').val();
             var lastNameField = $('#lastNamesignup').val();
             var usernameField = $('#usernamesignup').val();
             var emailField = $('#emailsignup').val();
             var passwordField = $('#passwordsignup').val();
             var passwordConfirmField = $('#passwordsignup_confirm').val();
-
             if (passwordField !== passwordConfirmField) {
-              var errorMessage = "Confirm password does not match password";
-              $('#generalErr').html(errorMessage);
+              var error = "Confirm password does not match password";
+              this.set("generalErr",error);
             } else if (passwordField.length < 6) {
-              var errorMessage = "Password must be logner than 6 characters";
-              $('#generalErr').html(errorMessage);
+              var error = "Password must be logner than 6 characters";
+               this.set("generalErr",error);
             } else {
               Promise.resolve()
               .then(function() {
@@ -207,7 +205,7 @@
                   })
                 }
                 else {
-                  $('#generalErr').html(auth.message);
+                   $('#generalErr').html(auth.message);
                 }
               })
             }
